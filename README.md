@@ -26,47 +26,75 @@ This project follows an industry-standard folder structure designed for scalabil
 ├── /public
 ├── /src
 │   ├── /app
+│   ├── /(admin)                        // Admin dashboard and pages
 │   │   ├── /admin
-│   │   │   ├── page.tsx               // Admin dashboard page
-│   │   │   ├── layout.tsx             // Admin layout (sidebars, headers, etc.)
-│   │   │   └── settings.tsx           // Admin settings page
-│   │   ├── /user
-│   │   │   ├── page.tsx               // User dashboard page
-│   │   │   ├── layout.tsx             // User layout (navigation, footers, etc.)
-│   │   │   └── profile.tsx            // User profile page
-│   │   ├── layout.tsx                 // Root layout for common components (Header/Footer)
-│   │   ├── global-error.tsx           // Global error handling
-│   │   └── page.tsx                   // Root index page
-│   ├── /components
-│   │   ├── /admin                     // Admin-specific reusable components
-│   │   │   ├── DashboardNav.tsx       // Admin navigation component
-│   │   └── /user                      // User-specific reusable components
-│   │       ├── ProfileCard.tsx        // User profile card component
+│   │   │   ├── layout.tsx              // Admin layout, applied to all admin pages
+│   │   │   ├── page.tsx                // Admin dashboard main page (e.g., /admin)
+│   │   │   ├── /user-management
+│   │   │   │   └── page.tsx            // User management (e.g., /admin/user-management)
+│   │   │   ├── /product-management
+│   │   │   │   └── page.tsx            // Product management (e.g., /admin/product-management)
+│   │   │   └── /order-management
+│   │   │   └── page.tsx                // Order management (e.g., /admin/order-management)
+│   │   │
+│   │   ├── /cart
+│   │   │   └── page.tsx                // Cart page
+│   │   ├── /checkout
+│   │   │   └── page.tsx                // Checkout page
+│   │   ├── /orders
+│   │   │   └── page.tsx                // Order History page
+│   │   ├── /product
+│   │   │   ├── page.tsx                // Products listing page
+│   │   │   └── /[id]
+│   │   │       └── page.tsx            // Product Details page with dynamic route
+│   │   │
+│   │   ├── /about
+│   │   │   └── page.tsx                // About page
+│   │   ├── /layout.tsx                 // Root layout for common components (Header/Footer)
+│   │   ├── /global-error.tsx           // Global error handling
+│   │   └── /page.tsx                   // Home page
+│   │
+│   ├── /components                     // Reusable components
+│   │   ├── /admin                      // Admin-specific reusable components
+│   │   │   ├── DashboardNav.tsx        // Admin navigation component
+│   │   └── /common                     // General reusable components (buttons, form elements)
+│   │       ├── Header.tsx              // Header component with navigation links
+│   │       ├── Footer.tsx              // Footer component with links
+│   │       └── ProductCard.tsx         // Product card component for listings
+│   │
 │   ├── /hooks
-│   │   ├── useAuth.ts                 // Hook for managing authentication and roles
-│   │   ├── useRedux.ts                // Redux helper hook
-│   │   └── useSSR.ts                  // Hook for SSR/CSR logic management
+│   │   ├── useAuth.ts                  // Hook for managing authentication and roles
+│   │   ├── useRedux.ts                 // Redux helper hook
+│   │   └── useSSR.ts                   // Hook for SSR/CSR logic management
+│   │
 │   ├── /layouts
-│   │   ├── AdminLayout.tsx            // Layout for admin dashboard
-│   │   └── UserLayout.tsx             // Layout for user dashboard
+│   │   ├── AdminLayout.tsx             // Layout for admin dashboard
+│   │   ├── MainLayout.tsx              // Main layout for non-admin pages
+│   │   └── ProductLayout.tsx           // Layout for product detail page
+│   │
 │   ├── /redux
 │   │   ├── /slices
-│   │   │   ├── authSlice.ts           // Auth slice (login/logout, session management)
-│   │   │   ├── userSlice.ts           // User state management slice
-│   │   │   └── adminSlice.ts          // Admin state management slice
-│   │   ├── store.ts                   // Redux store configuration
+│   │   │   ├── authSlice.ts            // Auth slice (login/logout, session management)
+│   │   │   ├── userSlice.ts            // User state management slice
+│   │   │   ├── productSlice.ts         // Product data management
+│   │   │   ├── cartSlice.ts            // Cart state management
+│   │   │   └── orderSlice.ts           // Order management slice
+│   │   ├── store.ts                    // Redux store configuration
 │   │   └── /types
-│   │       └── reduxTypes.ts          // Redux-related TypeScript types
+│   │       └── reduxTypes.ts           // Redux-related TypeScript types
+│   │
 │   ├── /styles
 │   │   ├── /admin
-│   │   │   └── dashboard.module.css   // Admin-specific CSS modules
+│   │   │   └── dashboard.module.css    // Admin-specific CSS modules
 │   │   ├── /user
-│   │   │   └── profile.module.css     // User-specific CSS modules
-│   │   └── globals.css                // Global styles (including NextUI overrides)
+│   │   │   └── profile.module.css      // User-specific CSS modules
+│   │   └── globals.css                 // Global styles (including NextUI overrides)
+│   │
 │   └── /types
-│       ├── authTypes.ts               // Authentication-related TypeScript types
-│       └── layoutTypes.ts             // Layout-related TypeScript types
-├── next.config.mjs                    // Next.js configuration
+│       ├── authTypes.ts                // Authentication-related TypeScript types
+│       └── layoutTypes.ts              // Layout-related TypeScript types
+│
+├── next.config.mjs                     // Next.js configuration
 ├── package-lock.json
 ├── package.json
 ├── postcss.config.mjs
