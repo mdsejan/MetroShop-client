@@ -1,9 +1,9 @@
-const Page = () => {
+const CartPage = () => {
   return (
-    <div>
-      <h2>This is Cart Page</h2>
+    <div className="w-full h-screen flex justify-center items-center">
+      <h2 className="text-5xl font-bold">This is Cart Page</h2>
     </div>
   );
 };
 
-export default Page;
+export default CartPage;

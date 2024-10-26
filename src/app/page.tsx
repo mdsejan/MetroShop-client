@@ -1,4 +1,4 @@
-const Page = () => {
+const HomePage = () => {
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <h2 className="text-5xl font-bold">This is Home Page</h2>
@@ -6,4 +6,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default HomePage;

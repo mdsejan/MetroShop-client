@@ -26,16 +26,16 @@ This project follows an industry-standard folder structure designed for scalabil
 ├── /public
 ├── /src
 │   ├── /app
-│   ├── /(admin)                        // Admin dashboard and pages
-│   │   ├── /admin
-│   │   │   ├── layout.tsx              // Admin layout, applied to all admin pages
-│   │   │   ├── page.tsx                // Admin dashboard main page (e.g., /admin)
-│   │   │   ├── /user-management
-│   │   │   │   └── page.tsx            // User management (e.g., /admin/user-management)
-│   │   │   ├── /product-management
-│   │   │   │   └── page.tsx            // Product management (e.g., /admin/product-management)
-│   │   │   └── /order-management
-│   │   │   └── page.tsx                // Order management (e.g., /admin/order-management)
+│   │   ├── /(admin)                    // Admin dashboard and pages
+│   │   │   └── /admin
+│   │   │     ├── layout.tsx            // Admin layout, applied to all admin pages
+│   │   │     ├── page.tsx              // Admin dashboard main page (e.g., /admin)
+│   │   │     ├── /user-management
+│   │   │     │   └── page.tsx          // User management (e.g., /admin/user-management)
+│   │   │     ├── /product-management
+│   │   │     │   └── page.tsx          // Product management (e.g., /admin/product-management)
+│   │   │     └── /order-management
+│   │   │       └── page.tsx            // Order management (e.g., /admin/order-management)
 │   │   │
 │   │   ├── /cart
 │   │   │   └── page.tsx                // Cart page
@@ -48,15 +48,15 @@ This project follows an industry-standard folder structure designed for scalabil
 │   │   │   └── /[id]
 │   │   │       └── page.tsx            // Product Details page with dynamic route
 │   │   │
-│   │   ├── /about
-│   │   │   └── page.tsx                // About page
+│   │   ├── /contact
+│   │   │   └── page.tsx                // Contact page
 │   │   ├── /layout.tsx                 // Root layout for common components (Header/Footer)
 │   │   ├── /global-error.tsx           // Global error handling
 │   │   └── /page.tsx                   // Home page
 │   │
 │   ├── /components                     // Reusable components
 │   │   ├── /admin                      // Admin-specific reusable components
-│   │   │   ├── DashboardNav.tsx        // Admin navigation component
+│   │   │   ├── AdminSidebar.tsx        // Admin Sidebar component
 │   │   └── /common                     // General reusable components (buttons, form elements)
 │   │       ├── Header.tsx              // Header component with navigation links
 │   │       ├── Footer.tsx              // Footer component with links
