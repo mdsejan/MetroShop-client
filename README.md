@@ -22,7 +22,7 @@ MetroShop is a full-stack e-commerce platform built to provide a seamless shoppi
 This project follows an industry-standard folder structure designed for scalability, maintainability, and ease of collaboration.
 
 ```
-/my-nextjs-app
+/Metro-Shop-Client
 ├── /public
 ├── /src
 │   ├── /app
