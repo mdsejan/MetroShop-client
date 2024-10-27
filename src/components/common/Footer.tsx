@@ -10,7 +10,7 @@ import Image from "next/image";
 const Footer: React.FC = () => {
   return (
     <footer id="footer" className="footer bg-black text-white py-10">
-      <div className="container mx-auto">
+      <div className="max-w-screen-2xl mx-auto px-4">
         <div className="footer-body flex flex-wrap justify-between gap-10">
           {/* Logo and Contact Info */}
           <div className="col-xl-3 col-md-6">
@@ -115,11 +115,7 @@ const Footer: React.FC = () => {
                   Returns + Exchanges
                 </a>
               </li>
-              <li>
-                <a href="/shipping-delivery" className="hover:underline">
-                  Shipping
-                </a>
-              </li>
+
               <li>
                 <a href="/terms-conditions" className="hover:underline">
                   Terms & Conditions
@@ -128,16 +124,6 @@ const Footer: React.FC = () => {
               <li>
                 <a href="/faq-1" className="hover:underline">
                   FAQ’s
-                </a>
-              </li>
-              <li>
-                <a href="/compare" className="hover:underline">
-                  Compare
-                </a>
-              </li>
-              <li>
-                <a href="/wishlist" className="hover:underline">
-                  My Wishlist
                 </a>
               </li>
             </ul>
@@ -196,7 +182,7 @@ const Footer: React.FC = () => {
 
         {/* Footer Bottom */}
         <div className="mt-10 border-t border-gray-700 pt-6 flex flex-wrap justify-between items-center">
-          <span>© 2024 Ecomus Store. All Rights Reserved</span>
+          <span>© 2024 Metro Shop. All Rights Reserved</span>
 
           <div className="tf-payment flex gap-4">
             <Image
