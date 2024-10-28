@@ -6,6 +6,7 @@ import {
   FaPinterestP
 } from "react-icons/fa";
 import Image from "next/image";
+import Link from "next/link";
 
 const Footer: React.FC = () => {
   return (
@@ -15,7 +16,7 @@ const Footer: React.FC = () => {
           {/* Logo and Contact Info */}
           <div className="col-xl-3 col-md-6">
             <div className="footer-logo mb-4">
-              <a href="/">
+              <Link href="/">
                 {/* <img
                   src="/images/logo/logo-white.svg"
                   alt="Logo"
@@ -24,7 +25,7 @@ const Footer: React.FC = () => {
                   loading="lazy"
                 /> */}
                 <h2>MetroShop</h2>
-              </a>
+              </Link>
             </div>
             <ul className="space-y-2">
               <li>
@@ -37,66 +38,69 @@ const Footer: React.FC = () => {
               <li>
                 <p>
                   Email:{" "}
-                  <a href="mailto:info@fashionshop.com" className="underline">
+                  <Link
+                    href="mailto:info@fashionshop.com"
+                    className="underline"
+                  >
                     info@fashionshop.com
-                  </a>
+                  </Link>
                 </p>
               </li>
               <li>
                 <p>
                   Phone:{" "}
-                  <a href="tel:+12125551234" className="underline">
+                  <Link href="tel:+12125551234" className="underline">
                     (212) 555-1234
-                  </a>
+                  </Link>
                 </p>
               </li>
             </ul>
 
             <ul className="flex gap-3 mt-4">
               <li>
-                <a
+                <Link
                   href="#"
                   className="w-8 h-8 flex items-center justify-center bg-gray-800 rounded-full text-white"
                   aria-label="Facebook"
                 >
                   <FaFacebookF />
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="#"
                   className="w-8 h-8 flex items-center justify-center bg-gray-800 rounded-full text-white"
                   aria-label="X (Twitter)"
                 >
                   <FaTwitter />
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="#"
                   className="w-8 h-8 flex items-center justify-center bg-gray-800 rounded-full text-white"
                   aria-label="Instagram"
                 >
                   <FaInstagram />
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="#"
                   className="w-8 h-8 flex items-center justify-center bg-gray-800 rounded-full text-white"
                   aria-label="TikTok"
                 >
                   <FaTiktok />
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="#"
                   className="w-8 h-8 flex items-center justify-center bg-gray-800 rounded-full text-white"
                   aria-label="Pinterest"
                 >
                   <FaPinterestP />
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -106,25 +110,25 @@ const Footer: React.FC = () => {
             <h6 className="font-semibold mb-3">Help</h6>
             <ul className="space-y-2">
               <li>
-                <a href="/privacy-policy" className="hover:underline">
+                <Link href="/privacy-policy" className="hover:underline">
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/delivery-return" className="hover:underline">
+                <Link href="/delivery-return" className="hover:underline">
                   Returns + Exchanges
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a href="/terms-conditions" className="hover:underline">
+                <Link href="/terms-conditions" className="hover:underline">
                   Terms & Conditions
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/faq-1" className="hover:underline">
+                <Link href="/faq-1" className="hover:underline">
                   FAQ’s
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -134,24 +138,24 @@ const Footer: React.FC = () => {
             <h6 className="font-semibold mb-3">About Us</h6>
             <ul className="space-y-2">
               <li>
-                <a href="/about-us" className="hover:underline">
+                <Link href="/about-us" className="hover:underline">
                   Our Story
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/our-store" className="hover:underline">
+                <Link href="/our-store" className="hover:underline">
                   Visit Our Store
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/contact-1" className="hover:underline">
+                <Link href="/contact-1" className="hover:underline">
                   Contact Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/about-us" className="hover:underline">
+                <Link href="/about-us" className="hover:underline">
                   About Us
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

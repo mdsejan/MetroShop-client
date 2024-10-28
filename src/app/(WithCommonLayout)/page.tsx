@@ -1,7 +1,12 @@
+import FeatureSection from "@/components/FeatureSection";
+import HeroSection from "@/components/HeroSection";
+
 const HomePage = () => {
   return (
-    <div className="w-full h-screen flex justify-center items-center">
-      <h2 className="text-3xl md:text-5xl font-bold">This is Home Page</h2>
+    <div>
+      <HeroSection />
+      <FeatureSection />
+      <div className="min-h-[40vh]"></div>
     </div>
   );
 };
