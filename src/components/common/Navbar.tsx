@@ -31,14 +31,7 @@ const Navbar: React.FC = () => {
             >
               Home
             </Link>
-            <Link
-              href="/product"
-              className={`text-gray-600 hover:text-gray-900 ${
-                isActive("/product") ? "text-blue-600 font-semibold" : ""
-              }`}
-            >
-              Products
-            </Link>
+
             <Link
               href="/cart"
               className={`text-gray-600 hover:text-gray-900 ${
@@ -119,15 +112,7 @@ const Navbar: React.FC = () => {
           >
             Home
           </Link>
-          <Link
-            href="/product"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={`text-gray-600 hover:text-gray-900 ${
-              isActive("/product") ? "text-blue-600 font-semibold" : ""
-            }`}
-          >
-            Products
-          </Link>
+
           <Link
             href="/cart"
             onClick={() => setIsMobileMenuOpen(false)}
