@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const product = {
   id: 1,
@@ -9,9 +10,8 @@ const product = {
   stock: 10,
   ratings: 4.5,
   reviewsCount: 1209,
-  image:
+  image: [
     "https://i.pinimg.com/564x/da/36/a8/da36a8eedeae4479dafd7588c0ef4f08.jpg",
-  thumbnailImages: [
     "https://i.pinimg.com/736x/4d/c1/64/4dc1648b092643b74a85656336d4fd80.jpg",
     "https://i.pinimg.com/564x/eb/77/e7/eb77e74c0f3447345800ffa417120dea.jpg",
     "https://i.pinimg.com/736x/37/c4/7e/37c47e5b58e23b1756bad9a0fd6e4571.jpg"
@@ -20,7 +20,12 @@ const product = {
 
 const ProductDetails: React.FC = () => {
   const [reviewText, setReviewText] = useState("");
-  const [reviews, setReviews] = useState<string[]>([]); // To store submitted reviews
+  const [reviews, setReviews] = useState<string[]>([]);
+  const [selectedImage, setSelectedImage] = useState(product.image[0]);
+
+  const handleThumbnailClick = (thumb: string) => {
+    setSelectedImage(thumb);
+  };
 
   const handleReviewSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,26 +88,36 @@ const ProductDetails: React.FC = () => {
               {/* Main Product Image */}
               <div className="lg:order-2 lg:ml-5">
                 <div className="max-w-xl overflow-hidden rounded-lg">
-                  <Image
-                    className="h-full w-full max-w-full object-cover"
-                    src={product.image}
-                    alt={product.name}
-                    layout="responsive"
-                    width={500}
-                    height={500}
-                  />
+                  <motion.div
+                    key={selectedImage}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="w-full h-[500px]"
+                  >
+                    <Image
+                      className="h-full w-full max-w-full object-cover"
+                      src={selectedImage}
+                      alt={product.name}
+                      width={500}
+                      height={500}
+                    />
+                  </motion.div>
                 </div>
               </div>
 
               {/* Thumbnail Images */}
               <div className="mt-2 w-full lg:order-1 lg:w-32 lg:flex-shrink-0">
                 <div className="flex flex-row items-start lg:flex-col">
-                  {product.thumbnailImages.map((thumb, index) => (
+                  {product.image.map((thumb, index) => (
                     <button
                       key={index}
                       type="button"
+                      onClick={() => handleThumbnailClick(thumb)}
                       className={`flex-0 aspect-square mb-3 h-20 overflow-hidden rounded-lg border-2 ${
-                        index === 0 ? "border-gray-900" : "border-transparent"
+                        selectedImage === thumb
+                          ? "border-gray-900"
+                          : "border-transparent"
                       } text-center`}
                     >
                       <Image
