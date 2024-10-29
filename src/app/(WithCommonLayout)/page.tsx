@@ -10,7 +10,7 @@ const HomePage = () => {
       <FeatureSection />
       <Products />
       <WhyShopSection />
-      <div className="min-h-[20vh]"></div>
+      <div className="min-h-[10vh]"></div>
     </div>
   );
 };
