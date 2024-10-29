@@ -87,23 +87,21 @@ const ProductDetails: React.FC = () => {
             <div className="lg:flex lg:items-start">
               {/* Main Product Image */}
               <div className="lg:order-2 lg:ml-5">
-                <div className="max-w-xl overflow-hidden rounded-lg">
-                  <motion.div
-                    key={selectedImage}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="w-full h-[500px]"
-                  >
-                    <Image
-                      className="h-full w-full max-w-full object-cover"
-                      src={selectedImage}
-                      alt={product.name}
-                      width={500}
-                      height={500}
-                    />
-                  </motion.div>
-                </div>
+                <motion.div
+                  key={selectedImage}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="max-w-xl overflow-hidden rounded-lg"
+                >
+                  <Image
+                    className="h-full w-full max-w-full object-cover"
+                    src={selectedImage}
+                    alt={product.name}
+                    width={500}
+                    height={500}
+                  />
+                </motion.div>
               </div>
 
               {/* Thumbnail Images */}

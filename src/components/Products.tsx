@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 
 import { useRef } from "react";
+import Link from "next/link";
 
 const cardRevealVariants = {
   hidden: { opacity: 0, scale: 0.9, y: 20 },
@@ -145,9 +146,9 @@ const Products: React.FC = () => {
               className="relative p-3 flex w-full flex-col overflow-hidden rounded-lg border border-gray-100 bg-white"
               variants={cardRevealVariants}
             >
-              <a
+              <Link
+                href="/product/1243"
                 className="relative flex h-40 lg:h-60 w-full overflow-hidden rounded-t-lg"
-                href="#"
               >
                 <Image
                   src={product.images[0]}
@@ -160,13 +161,13 @@ const Products: React.FC = () => {
                 <span className="absolute top-2 left-2 rounded-full bg-black px-2 text-xs font-medium text-white">
                   New
                 </span>
-              </a>
+              </Link>
               <div className="px-4 py-3">
-                <a href="#">
+                <Link href="/product/1243">
                   <h5 className="text-md tracking-tight text-slate-900">
                     {product.name}
                   </h5>
-                </a>
+                </Link>
                 <p className="text-gray-600 mb-2 text-sm">
                   {product.description}
                 </p>
