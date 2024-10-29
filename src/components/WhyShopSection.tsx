@@ -56,7 +56,7 @@ const WhyShopSection: React.FC = () => {
               className="flex flex-col items-center border border-gray-200 rounded-lg p-6"
               initial={{ opacity: 0, y: 50 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: index * 0.2, duration: 0.5 }}
+              transition={{ delay: index * 0.3, duration: 0.8 }}
               whileHover={{ scale: 1.05 }}
             >
               <motion.div

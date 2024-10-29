@@ -71,7 +71,7 @@ const Navbar: React.FC = () => {
               href="/admin"
               className="px-4 py-2 rounded-md text-white font-semibold bg-blue-600 hover:bg-gray-700 transition-colors duration-200"
             >
-              Dashboard
+              Login
             </Link>
           </div>
 

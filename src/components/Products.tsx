@@ -1,6 +1,23 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
+import { motion, useInView } from "framer-motion";
+
+import { useRef } from "react";
+
+const cardRevealVariants = {
+  hidden: { opacity: 0, scale: 0.9, y: 20 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: "easeOut",
+      staggerChildren: 0.1
+    }
+  }
+};
 
 const demoProducts = [
   {
@@ -56,19 +73,30 @@ const demoProducts = [
 const Products: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
+  const filterRef = useRef(null);
+  const productRef = useRef(null);
+  const filterInView = useInView(filterRef, { once: true });
+  const productsInView = useInView(productRef, { once: true });
+
   return (
     <div className="max-w-screen-2xl mx-auto px-4 py-16">
       <div className="mb-12 pb-3 text-center">
         <h2 className="text-2xl font-normal border-b-2 border-gray-300 inline-block">
           <span>
-            All <span className="font-semibold">Availabe</span> Products?
+            All <span className="font-semibold">Available</span> Products?
           </span>
         </h2>
       </div>
+
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Left Side - Filter Options */}
-        <div className="w-full lg:w-1/4">
-          <div className="  p-4 border rounded-lg mb-4 md:mb-0">
+        <motion.div
+          className="w-full lg:w-1/4"
+          ref={filterRef}
+          initial="hidden"
+          animate={filterInView ? "visible" : "hidden"}
+        >
+          <div className="p-4 border rounded-lg mb-4 md:mb-0">
             <h2 className="text-xl font-semibold mb-4">Filter Products</h2>
             <input
               type="text"
@@ -101,14 +129,21 @@ const Products: React.FC = () => {
               <input type="range" className="w-full" min="0" max="1000" />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Right Side - Product Cards */}
-        <div className="w-full lg:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          className="w-full lg:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          ref={productRef}
+          initial="hidden"
+          animate={productsInView ? "visible" : "hidden"}
+          variants={cardRevealVariants}
+        >
           {demoProducts.map((product) => (
-            <div
+            <motion.div
               key={product._id}
-              className="relative p-3 flex w-full  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white"
+              className="relative p-3 flex w-full flex-col overflow-hidden rounded-lg border border-gray-100 bg-white"
+              variants={cardRevealVariants}
             >
               <a
                 className="relative flex h-40 lg:h-60 w-full overflow-hidden rounded-t-lg"
@@ -161,9 +196,9 @@ const Products: React.FC = () => {
                   Add to cart
                 </a>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
