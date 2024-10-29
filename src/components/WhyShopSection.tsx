@@ -41,7 +41,7 @@ const WhyShopSection: React.FC = () => {
 
   return (
     <section ref={ref} className="py-12">
-      <div className="container mx-auto px-4">
+      <div className="max-w-screen-2xl mx-auto px-4">
         <div className="mb-5 pb-3 text-center">
           <h2 className="text-2xl font-normal border-b-2 border-gray-300 inline-block">
             <span>
