@@ -78,7 +78,7 @@ const CartPage: React.FC = () => {
                   {cartItems.map((item) => (
                     <li
                       key={item.id}
-                      className="flex justify-between items-center py-6 space-x-5 text-left"
+                      className="flex flex-col lg:flex-row lg:justify-between items-center py-6 space-x-5 text-left"
                     >
                       <Image
                         className="h-24 w-24 flex-none rounded-md object-cover"
@@ -87,7 +87,7 @@ const CartPage: React.FC = () => {
                         width={96}
                         height={96}
                       />
-                      <div className="flex flex-1 items-center justify-between">
+                      <div className="flex lg:flex-1 items-center justify-between">
                         <div>
                           <div className="text-base font-medium text-gray-900">
                             {item.name}
