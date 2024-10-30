@@ -64,7 +64,7 @@ const CartPage: React.FC = () => {
   };
 
   return (
-    <section className="h-screen py-12 sm:py-16 lg:py-20">
+    <section className="min-h-screen py-12 sm:py-16 lg:py-20">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-center">
           <h1 className="text-2xl font-semibold text-gray-900">Your Cart</h1>

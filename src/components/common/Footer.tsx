@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const Footer: React.FC = () => {
   return (
-    <footer id="footer" className="footer bg-black text-white py-10">
+    <footer id="footer" className="footer bg-black text-white py-10 mt-16">
       <div className="max-w-screen-2xl mx-auto px-4">
         <div className="footer-body flex flex-wrap justify-between gap-10">
           {/* Logo and Contact Info */}
