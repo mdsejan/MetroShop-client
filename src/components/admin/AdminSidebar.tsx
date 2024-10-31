@@ -63,6 +63,19 @@ const AdminSidebar = ({
           </li>
           <li>
             <Link
+              href="/admin/categories-management"
+              className={`block p-2 rounded ${
+                pathname === "/admin/categories-management"
+                  ? "bg-gray-800"
+                  : "hover:bg-gray-800"
+              } transition-colors duration-200`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              Categories Management
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/admin/order-management"
               className={`block p-2 rounded ${
                 pathname === "/admin/order-management"
