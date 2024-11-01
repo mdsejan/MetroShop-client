@@ -3,10 +3,21 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import {
+  selectCurrentUser,
+  useCurrentToken
+} from "@/redux/features/auth/authSlice";
+import { useSelector } from "react-redux";
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+
+  const currentUser = useSelector(selectCurrentUser);
+  const isAuthenticated = useSelector(useCurrentToken);
+
+  console.log(currentUser);
+  console.log(isAuthenticated);
 
   const isActive = (path: string) => pathname === path;
 
@@ -63,6 +74,14 @@ const Navbar: React.FC = () => {
               }`}
             >
               Contact
+            </Link>
+            <Link
+              href="/login"
+              className={`text-gray-600 hover:text-gray-900 ${
+                isActive("/login") ? "text-blue-600 font-semibold" : ""
+              }`}
+            >
+              Login
             </Link>
           </div>
 

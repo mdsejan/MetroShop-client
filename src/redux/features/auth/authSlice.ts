@@ -1,5 +1,5 @@
 import { RootState } from "@/redux/store";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type User = {
   userId: string;
@@ -8,7 +8,7 @@ export type User = {
   exp: number;
 };
 
-type TAuthState = {
+export type TAuthState = {
   user: null | User;
   token: null | string;
 };
@@ -22,7 +22,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action) => {
+    setUser: (state, action: PayloadAction<{ token: string }>) => {
       const { token } = action.payload;
       try {
         const decodedToken: User = JSON.parse(atob(token.split(".")[1]));
