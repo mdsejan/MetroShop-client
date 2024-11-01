@@ -2,6 +2,7 @@
 import { AppStore, makeStore } from "@/redux/store";
 import { useRef } from "react";
 import { Provider } from "react-redux";
+import { Toaster } from "sonner";
 
 export default function StoreProvider({
   children
@@ -13,5 +14,10 @@ export default function StoreProvider({
     storeRef.current = makeStore();
   }
 
-  return <Provider store={storeRef.current}>{children}</Provider>;
+  return (
+    <Provider store={storeRef.current}>
+      {children}
+      <Toaster position="bottom-right" richColors />
+    </Provider>
+  );
 }
