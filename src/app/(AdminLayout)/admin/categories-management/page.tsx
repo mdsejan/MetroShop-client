@@ -35,6 +35,12 @@ const CategoriesManagement: React.FC = () => {
   const handleAddCategory = async (e: React.FormEvent) => {
     e.preventDefault();
     const toastId = toast.loading("Creating Category ...");
+
+    if (!token) {
+      toast.error("Something wents wrong", { id: toastId, duration: 1300 });
+      setShowAddCategoryModal(false);
+      return;
+    }
     try {
       await createCategory({
         categoryInfo: {
@@ -57,7 +63,10 @@ const CategoriesManagement: React.FC = () => {
   };
 
   const handleDeleteCategory = (categoryId: string) => {
-    if (!categoryId) return;
+    if (!categoryId || !token) {
+      toast.error("Something wents wrong", { duration: 1300 });
+      return;
+    }
 
     const confirmDelete = async () => {
       try {
