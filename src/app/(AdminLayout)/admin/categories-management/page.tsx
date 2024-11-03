@@ -9,6 +9,7 @@ import {
   useGetCategoryQuery
 } from "@/redux/features/category/categoryApi";
 import { toast } from "sonner";
+import ListLoading from "@/components/common/ListLoading";
 
 interface Category {
   _id: string;
@@ -125,7 +126,7 @@ const CategoriesManagement: React.FC = () => {
       </div>
 
       {isLoading ? (
-        <p>Loading categories...</p>
+        <ListLoading />
       ) : error ? (
         <p>Error loading categories.</p>
       ) : (
