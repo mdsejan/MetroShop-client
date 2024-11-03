@@ -1,6 +1,9 @@
 "use client";
 
+import { useCurrentToken } from "@/redux/features/auth/authSlice";
+import { useCreateCategoryMutation } from "@/redux/features/category/categoryApi";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 interface Category {
   _id: string;
@@ -17,6 +20,8 @@ const CategoriesManagement: React.FC = () => {
     description: ""
   });
 
+  const token = useSelector(useCurrentToken);
+
   const [categories, setCategories] = useState<Category[]>([
     {
       _id: "671a5572b8e0fb0998b3388c",
@@ -31,14 +36,26 @@ const CategoriesManagement: React.FC = () => {
     }
   ]);
 
-  const handleAddCategory = (e: React.FormEvent) => {
+  const [createCategory] = useCreateCategoryMutation();
+
+  const handleAddCategory = async (e: React.FormEvent) => {
     e.preventDefault();
-    setCategories([
-      ...categories,
-      { ...categoryData, _id: Date.now().toString() }
-    ]);
-    setCategoryData({ _id: "", name: "", description: "" });
-    setShowAddCategoryModal(false);
+
+    try {
+      const response = await createCategory({
+        categoryInfo: {
+          name: categoryData.name,
+          description: categoryData.description
+        },
+        token
+      }).unwrap();
+
+      setCategories([...categories, { ...response, _id: response._id }]);
+      setCategoryData({ _id: "", name: "", description: "" });
+      setShowAddCategoryModal(false);
+    } catch (error) {
+      console.error("Failed to add category:", error);
+    }
   };
 
   const handleUpdateCategory = (e: React.FormEvent) => {
