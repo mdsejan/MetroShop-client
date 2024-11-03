@@ -6,7 +6,8 @@ import { useCurrentToken } from "@/redux/features/auth/authSlice";
 import {
   useCreateCategoryMutation,
   useDeleteCategoryMutation,
-  useGetCategoryQuery
+  useGetCategoryQuery,
+  useUpdateCategoryMutation
 } from "@/redux/features/category/categoryApi";
 import { toast } from "sonner";
 import ListLoading from "@/components/common/ListLoading";
@@ -19,7 +20,7 @@ interface Category {
 
 const CategoriesManagement: React.FC = () => {
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
-  // const [showUpdateCategoryModal, setShowUpdateCategoryModal] = useState(false);
+  const [showUpdateCategoryModal, setShowUpdateCategoryModal] = useState(false);
   const [categoryData, setCategoryData] = useState<Category>({
     _id: "",
     name: "",
@@ -30,6 +31,7 @@ const CategoriesManagement: React.FC = () => {
   const { data: categoriesData, isLoading, error } = useGetCategoryQuery({});
   const [createCategory] = useCreateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
+  const [updateCategory] = useUpdateCategoryMutation();
 
   const categories = categoriesData?.data || [];
 
@@ -60,6 +62,36 @@ const CategoriesManagement: React.FC = () => {
       setShowAddCategoryModal(false);
     } catch (error) {
       console.error("Failed to add category:", error);
+    }
+  };
+
+  const handleUpdateCategory = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault();
+
+    if (!token || !categoryData._id) {
+      toast.error("Something went wrong");
+      return;
+    }
+
+    const toastId = toast.loading("Updating Category...");
+    try {
+      const response = await updateCategory({
+        categoryId: categoryData._id,
+        token,
+        categoryData: {
+          name: categoryData.name,
+          description: categoryData.description
+        }
+      }).unwrap();
+
+      if (response?.success) {
+        toast.success("Category updated successfully!", { id: toastId });
+        setCategoryData({ _id: "", name: "", description: "" });
+        setShowUpdateCategoryModal(false);
+      }
+    } catch (error) {
+      toast.error("Failed to update category", { id: toastId });
+      console.error("Failed to update category:", error);
     }
   };
 
@@ -110,7 +142,7 @@ const CategoriesManagement: React.FC = () => {
 
   const openUpdateModal = (category: Category) => {
     setCategoryData(category);
-    // setShowUpdateCategoryModal(true);
+    setShowUpdateCategoryModal(true);
   };
 
   return (
@@ -220,7 +252,7 @@ const CategoriesManagement: React.FC = () => {
       )}
 
       {/* Update Category Modal */}
-      {/* {showUpdateCategoryModal && (
+      {showUpdateCategoryModal && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
           <div className="bg-white p-8 rounded-md max-w-lg w-full max-h-full overflow-y-auto">
             <h3 className="text-2xl mb-4">Update Category</h3>
@@ -271,7 +303,7 @@ const CategoriesManagement: React.FC = () => {
             </form>
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };
