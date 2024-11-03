@@ -6,7 +6,7 @@ export const baseApi = createApi({
     baseUrl: "https://metro-shop-server.vercel.app/api"
     // baseUrl: "http://localhost:5000/api",
   }),
-  tagTypes: ["User", "Category"],
+  tagTypes: ["User", "Category", "Product"],
   endpoints: () => ({})
 });
 
