@@ -1,9 +1,14 @@
 "use client";
 
-import { useCurrentToken } from "@/redux/features/auth/authSlice";
-import { useCreateCategoryMutation } from "@/redux/features/category/categoryApi";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { useCurrentToken } from "@/redux/features/auth/authSlice";
+import {
+  useCreateCategoryMutation,
+  useDeleteCategoryMutation,
+  useGetCategoryQuery
+} from "@/redux/features/category/categoryApi";
+import { toast } from "sonner";
 
 interface Category {
   _id: string;
@@ -13,7 +18,7 @@ interface Category {
 
 const CategoriesManagement: React.FC = () => {
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
-  const [showUpdateCategoryModal, setShowUpdateCategoryModal] = useState(false);
+  // const [showUpdateCategoryModal, setShowUpdateCategoryModal] = useState(false);
   const [categoryData, setCategoryData] = useState<Category>({
     _id: "",
     name: "",
@@ -21,28 +26,17 @@ const CategoriesManagement: React.FC = () => {
   });
 
   const token = useSelector(useCurrentToken);
-
-  const [categories, setCategories] = useState<Category[]>([
-    {
-      _id: "671a5572b8e0fb0998b3388c",
-      name: "Audio",
-      description: "Category for headsets, speakers, and other audio devices."
-    },
-    {
-      _id: "671a5587b8e0fb0998b3388e",
-      name: "Accessories",
-      description:
-        "Category for additional items like cables, adapters, and mousepads."
-    }
-  ]);
-
+  const { data: categoriesData, isLoading, error } = useGetCategoryQuery({});
   const [createCategory] = useCreateCategoryMutation();
+  const [deleteCategory] = useDeleteCategoryMutation();
+
+  const categories = categoriesData?.data || [];
 
   const handleAddCategory = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    const toastId = toast.loading("Creating Category ...");
     try {
-      const response = await createCategory({
+      await createCategory({
         categoryInfo: {
           name: categoryData.name,
           description: categoryData.description
@@ -50,7 +44,11 @@ const CategoriesManagement: React.FC = () => {
         token
       }).unwrap();
 
-      setCategories([...categories, { ...response, _id: response._id }]);
+      toast.success("Category created successfully!", {
+        id: toastId,
+        duration: 2000
+      });
+
       setCategoryData({ _id: "", name: "", description: "" });
       setShowAddCategoryModal(false);
     } catch (error) {
@@ -58,23 +56,51 @@ const CategoriesManagement: React.FC = () => {
     }
   };
 
-  const handleUpdateCategory = (e: React.FormEvent) => {
-    e.preventDefault();
-    setCategories(
-      categories.map((cat) =>
-        cat._id === categoryData._id ? categoryData : cat
-      )
-    );
-    setShowUpdateCategoryModal(false);
-  };
+  const handleDeleteCategory = (categoryId: string) => {
+    if (!categoryId) return;
 
-  const handleDeleteCategory = (id: string) => {
-    setCategories(categories.filter((cat) => cat._id !== id));
+    const confirmDelete = async () => {
+      try {
+        const res = await deleteCategory({ token, categoryId }).unwrap();
+        if (res?.success) {
+          toast.success(res.message, { duration: 1300 });
+        }
+      } catch (error) {
+        console.error("Failed to delete category:", error);
+        toast.error("Failed to delete the Category");
+      }
+    };
+
+    toast(
+      <div>
+        <p>Are you sure you want to delete this Category?</p>
+        <div className="flex justify-end mt-4">
+          <button
+            onClick={() => {
+              confirmDelete();
+              toast.dismiss();
+            }}
+            className="bg-red-500 text-white py-1 px-3 rounded mr-2"
+          >
+            Yes
+          </button>
+          <button
+            onClick={() => toast.dismiss()}
+            className="bg-gray-500 text-white py-1 px-3 rounded"
+          >
+            No
+          </button>
+        </div>
+      </div>,
+      {
+        duration: 5000
+      }
+    );
   };
 
   const openUpdateModal = (category: Category) => {
     setCategoryData(category);
-    setShowUpdateCategoryModal(true);
+    // setShowUpdateCategoryModal(true);
   };
 
   return (
@@ -89,40 +115,47 @@ const CategoriesManagement: React.FC = () => {
         </button>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-300">
-          <thead className="bg-[#2499EF] text-white">
-            <tr>
-              <th className="px-4 py-2 border">Category Name</th>
-              <th className="px-4 py-2 border">Description</th>
-              <th className="px-4 py-2 border">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categories.map((category) => (
-              <tr key={category._id}>
-                <td className="px-4 py-2 border">{category.name}</td>
-                <td className="px-4 py-2 border">{category.description}</td>
-                <td className="px-4 py-2 border">
-                  <button
-                    onClick={() => openUpdateModal(category)}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded-md mr-2"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDeleteCategory(category._id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded-md"
-                  >
-                    Delete
-                  </button>
-                </td>
+      {isLoading ? (
+        <p>Loading categories...</p>
+      ) : error ? (
+        <p>Error loading categories.</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border border-gray-300">
+            <thead className="bg-[#2499EF] text-white">
+              <tr>
+                <th className="px-4 py-2 border">Category Name</th>
+                <th className="px-4 py-2 border">Description</th>
+                <th className="px-4 py-2 border">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {categories.map((category: Category) => (
+                <tr key={category._id}>
+                  <td className="px-4 py-2 border">{category.name}</td>
+                  <td className="px-4 py-2 border">{category.description}</td>
+                  <td className="px-4 py-2 border">
+                    <button
+                      onClick={() => openUpdateModal(category)}
+                      className="bg-yellow-500 text-white px-3 py-1 rounded-md mr-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteCategory(category._id)}
+                      className="bg-red-600 text-white px-3 py-1 rounded-md"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
+      {/* Add Category Modal */}
       {showAddCategoryModal && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
           <div className="bg-white p-8 rounded-md max-w-lg w-full max-h-full overflow-y-auto">
@@ -176,7 +209,8 @@ const CategoriesManagement: React.FC = () => {
         </div>
       )}
 
-      {showUpdateCategoryModal && (
+      {/* Update Category Modal */}
+      {/* {showUpdateCategoryModal && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
           <div className="bg-white p-8 rounded-md max-w-lg w-full max-h-full overflow-y-auto">
             <h3 className="text-2xl mb-4">Update Category</h3>
@@ -227,7 +261,7 @@ const CategoriesManagement: React.FC = () => {
             </form>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

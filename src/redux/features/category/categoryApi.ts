@@ -10,24 +10,27 @@ const categoryApi = baseApi.injectEndpoints({
           Authorization: `Bearer ${token}`
         },
         body: categoryInfo
-      })
+      }),
+      invalidatesTags: ["Category"]
     }),
 
     getCategory: builder.query({
       query: () => ({
         url: "/category",
         method: "GET"
-      })
+      }),
+      providesTags: ["Category"]
     }),
 
     deleteCategory: builder.mutation({
       query: ({ token, categoryId }) => ({
-        url: `/rooms/${categoryId}`,
+        url: `/category/${categoryId}`,
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`
         }
-      })
+      }),
+      invalidatesTags: ["Category"]
     })
   }),
   overrideExisting: false
