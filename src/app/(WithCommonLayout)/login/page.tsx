@@ -1,7 +1,7 @@
 "use client";
 
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { toast } from "sonner";
 import { setUser } from "@/redux/features/auth/authSlice";
@@ -10,6 +10,8 @@ const LoginPage = () => {
   const [login] = useLoginMutation();
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const searchParams = useSearchParams();
 
   const handleLogin = async () => {
     const toastId = toast.loading("Logging in...");
@@ -23,7 +25,8 @@ const LoginPage = () => {
       dispatch(setUser({ token: response.token }));
       toast.success("Logged In Successfully", { id: toastId, duration: 2000 });
 
-      router.push("/");
+      const redirectTo = searchParams.get("redirect") || "/";
+      router.push(redirectTo);
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message || "Login failed. Please try again.", {

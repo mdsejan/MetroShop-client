@@ -1,6 +1,8 @@
 "use client";
+import { useCurrentToken } from "@/redux/features/auth/authSlice";
 import Image from "next/image";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 interface Product {
   _id: string;
@@ -18,6 +20,10 @@ const ProductManagement = () => {
   const [showProductDetailModal, setShowProductDetailModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const token = useSelector(useCurrentToken);
+
+  console.log(token);
 
   const products: Product[] = [
     {
