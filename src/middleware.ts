@@ -7,7 +7,6 @@ type Role = keyof typeof roleBaseRoutes;
 const Authroutes = ["/login", "/registration"];
 
 const roleBaseRoutes = {
-  user: ["/cart", "/checkout", "/orders"],
   admin: [/^\/admin/]
 };
 
@@ -36,12 +35,5 @@ export async function middleware(request: NextRequest) {
 
 // Configure matching paths for middleware
 export const config = {
-  matcher: [
-    "/admin",
-    "/admin/:path*",
-    "/login",
-    "/cart",
-    "/checkout",
-    "/orders"
-  ]
+  matcher: ["/admin", "/admin/:path*", "/login"]
 };

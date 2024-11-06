@@ -32,6 +32,7 @@ const Navbar: React.FC = () => {
     dispatch(logout());
     toast.success("Logout successfull", { id: toastId });
   };
+
   console.log(currentUser);
   console.log(isAuthenticated);
 
@@ -106,8 +107,12 @@ const Navbar: React.FC = () => {
               {isAuthenticated && currentUser ? (
                 <>
                   <Image
-                    src={""}
+                    src={
+                      "https://i.pinimg.com/564x/2a/2e/e4/2a2ee4511c654d9d7546f30a883e3629.jpg"
+                    }
                     alt="User Avatar"
+                    width={10}
+                    height={10}
                     onClick={toggleDropdown}
                     className="w-10 h-10 rounded-full cursor-pointer"
                   />
