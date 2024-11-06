@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { useCurrentToken } from "@/redux/features/auth/authSlice";
+import Cookies from "js-cookie";
 import {
   useCreateCategoryMutation,
   useDeleteCategoryMutation,
@@ -27,7 +26,7 @@ const CategoriesManagement: React.FC = () => {
     description: ""
   });
 
-  const token = useSelector(useCurrentToken);
+  const token = Cookies.get("token");
   const { data: categoriesData, isLoading, error } = useGetCategoryQuery({});
   const [createCategory] = useCreateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();

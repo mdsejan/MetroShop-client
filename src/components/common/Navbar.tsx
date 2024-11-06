@@ -3,19 +3,35 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import {
-  selectCurrentUser,
-  useCurrentToken
-} from "@/redux/features/auth/authSlice";
+import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice";
+import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
+import { useAppDispatch } from "@/redux/hooks";
+import Image from "next/image";
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
 
   const currentUser = useSelector(selectCurrentUser);
-  const isAuthenticated = useSelector(useCurrentToken);
+  const isAuthenticated = Cookies.get("token");
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Toggle the dropdown menu
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  // handle logout
+  const handleLogout = () => {
+    const toastId = toast.loading("proccessing...");
+    Cookies.remove("token");
+    dispatch(logout());
+    toast.success("Logout successfull", { id: toastId });
+  };
   console.log(currentUser);
   console.log(isAuthenticated);
 
@@ -86,12 +102,43 @@ const Navbar: React.FC = () => {
           </div>
 
           <div>
-            <Link
-              href="/admin"
-              className="px-4 py-2 rounded-md text-white font-semibold bg-blue-600 hover:bg-gray-700 transition-colors duration-200"
-            >
-              Login
-            </Link>
+            <div className="relative">
+              {isAuthenticated && currentUser ? (
+                <>
+                  <Image
+                    src={""}
+                    alt="User Avatar"
+                    onClick={toggleDropdown}
+                    className="w-10 h-10 rounded-full cursor-pointer"
+                  />
+                  {isOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                      <ul className="py-2">
+                        <Link
+                          href={"/admin"}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                        >
+                          Admin
+                        </Link>
+                        <li
+                          onClick={() => handleLogout()}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                        >
+                          Logout
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <Link
+                  href={"/login"}
+                  className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                >
+                  Login
+                </Link>
+              )}
+            </div>
           </div>
 
           <div className="flex md:hidden">

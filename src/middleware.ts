@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getCurrenUser } from "./services/authService";
 
-type role = keyof typeof roleBaseRoutes;
+type Role = keyof typeof roleBaseRoutes;
 
 const Authroutes = ["/login", "/registration"];
 
@@ -16,15 +16,17 @@ export async function middleware(request: NextRequest) {
 
   const user = await getCurrenUser();
 
-  if (!user) {
-    if (Authroutes.includes(pathname)) {
-      return NextResponse.next();
-    }
+  if (!user && Authroutes.includes(pathname)) {
+    return NextResponse.next();
   }
 
-  if (user?.role && roleBaseRoutes[user?.role as role]) {
-    const route = roleBaseRoutes[user?.role as role];
-    if (route.some((route) => pathname.match(route))) {
+  if (!user && !Authroutes.includes(pathname)) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  if (user?.role && roleBaseRoutes[user.role as Role]) {
+    const allowedRoutes = roleBaseRoutes[user.role as Role];
+    if (allowedRoutes.some((route) => pathname.match(route))) {
       return NextResponse.next();
     }
   }
@@ -32,11 +34,10 @@ export async function middleware(request: NextRequest) {
   return NextResponse.redirect(new URL("/", request.url));
 }
 
-// See "Matching Paths" below to learn more
+// Configure matching paths for middleware
 export const config = {
   matcher: [
     "/admin",
-    "/admin/:page*",
     "/admin/:path*",
     "/login",
     "/cart",
