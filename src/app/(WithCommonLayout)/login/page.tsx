@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { toast } from "sonner";
 import { setUser } from "@/redux/features/auth/authSlice";
+import Cookies from "js-cookie";
 
 const LoginPage = () => {
   const [login] = useLoginMutation();
@@ -22,7 +23,8 @@ const LoginPage = () => {
 
     try {
       const response = await login({ email, password }).unwrap();
-      dispatch(setUser({ token: response.token }));
+      Cookies.set("token", response?.token);
+      dispatch(setUser({ token: response?.token }));
       toast.success("Logged In Successfully", { id: toastId, duration: 2000 });
 
       const redirectTo = searchParams.get("redirect") || "/";

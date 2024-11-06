@@ -6,36 +6,18 @@ type role = keyof typeof roleBaseRoutes;
 
 const Authroutes = ["/login", "/registration"];
 
-const ProtectedRoute = ["/cart", "/checkout"];
-
 const roleBaseRoutes = {
-  USER: [/^\/user/],
-  ADMIN: [/^\/admin/]
+  user: ["/cart", "/checkout", "/orders"],
+  admin: [/^\/admin/]
 };
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  //   get user from decoded token
+
   const user = await getCurrenUser();
 
-  //   if user not exist go login otherwise not
   if (!user) {
     if (Authroutes.includes(pathname)) {
-      return NextResponse.next();
-    } else {
-      return NextResponse.redirect(
-        new URL(`/login?redirect=${pathname}`, request.url)
-      );
-    }
-  }
-
-  // default protected route
-  if (ProtectedRoute?.includes(pathname)) {
-    if (!user) {
-      return NextResponse.redirect(
-        new URL(`/login?redirect=${pathname}`, request.url)
-      );
-    } else {
       return NextResponse.next();
     }
   }
@@ -46,10 +28,19 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
   }
+
   return NextResponse.redirect(new URL("/", request.url));
 }
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/admin", "/admin/:page*", "/user", "/login", "/registration"]
+  matcher: [
+    "/admin",
+    "/admin/:page*",
+    "/admin/:path*",
+    "/login",
+    "/cart",
+    "/checkout",
+    "/orders"
+  ]
 };

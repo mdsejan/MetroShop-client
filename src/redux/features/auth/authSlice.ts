@@ -1,4 +1,5 @@
 import { RootState } from "@/redux/store";
+import Cookies from "js-cookie";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type User = {
@@ -33,6 +34,7 @@ const authSlice = createSlice({
           exp: decodedToken.exp
         };
         state.token = token;
+        Cookies.set("token", token);
       } catch (error) {
         console.error("Invalid token format", error);
         state.user = null;
@@ -42,6 +44,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
+      Cookies.remove("token");
     }
   }
 });

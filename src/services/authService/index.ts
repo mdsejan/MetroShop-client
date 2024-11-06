@@ -4,20 +4,15 @@ import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 
 export const getCurrenUser = async () => {
-  const accessToken = cookies().get("accessToken")?.value;
+  const token = cookies().get("token")?.value;
 
   let decodedToken = null;
 
-  if (accessToken) {
-    decodedToken = await jwtDecode(accessToken as string);
+  if (token) {
+    decodedToken = await jwtDecode(token as string);
     return {
-      _id: decodedToken?._id,
-      name: decodedToken?.name,
-      email: decodedToken?.email,
-      phoneNumber: decodedToken?.phoneNumber,
-      role: decodedToken?.role,
-      profilePhoto: decodedToken?.profilePhoto,
-      verified: decodedToken?.verified
+      userId: decodedToken?.userId,
+      role: decodedToken?.role
     };
   }
   return decodedToken;
