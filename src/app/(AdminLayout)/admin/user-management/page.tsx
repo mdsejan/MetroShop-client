@@ -1,34 +1,20 @@
 "use client";
 import React, { useState } from "react";
+import Cookies from "js-cookie";
+import { useGetAllUserQuery } from "@/redux/features/auth/authApi";
 
 interface User {
   _id: string;
   name: string;
   email: string;
-  registrationDate: string;
-  isActive: boolean;
+  phone: string;
+  isDeleted: boolean;
   role: "Admin" | "User";
 }
 
 const UserManagement: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([
-    {
-      _id: "1",
-      name: "John Doe",
-      email: "john@example.com",
-      registrationDate: "2023-10-01T10:00:00Z",
-      isActive: true,
-      role: "User"
-    },
-    {
-      _id: "2",
-      name: "Jane Smith",
-      email: "jane@example.com",
-      registrationDate: "2023-10-15T14:30:00Z",
-      isActive: false,
-      role: "Admin"
-    }
-  ]);
+  const token = Cookies.get("token");
+  const { data: usersData, isLoading, isError } = useGetAllUserQuery(token);
 
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [showEditUserModal, setShowEditUserModal] = useState(false);
@@ -36,39 +22,36 @@ const UserManagement: React.FC = () => {
     _id: "",
     name: "",
     email: "",
-    registrationDate: new Date().toISOString(),
-    isActive: true,
+    phone: "",
+    isDeleted: true,
     role: "User"
   });
 
+  const users = usersData?.data || [];
+
   const handleAddUser = (e: React.FormEvent) => {
     e.preventDefault();
-    setUsers([...users, { ...newUser, _id: Date.now().toString() }]);
-    setNewUser({
-      _id: "",
-      name: "",
-      email: "",
-      registrationDate: new Date().toISOString(),
-      isActive: true,
-      role: "User"
-    });
+
     setShowAddUserModal(false);
   };
 
   const handleEditUser = (e: React.FormEvent) => {
     e.preventDefault();
-    setUsers(users.map((user) => (user._id === newUser._id ? newUser : user)));
+
     setShowEditUserModal(false);
   };
 
   const handleDeleteUser = (id: string) => {
-    setUsers(users.filter((user) => user._id !== id));
+    console.log(id);
   };
 
   const openEditUserModal = (user: User) => {
     setNewUser(user);
     setShowEditUserModal(true);
   };
+
+  if (isLoading) return <p>Loading users...</p>;
+  if (isError) return <p>Error loading users.</p>;
 
   return (
     <div className="max-w-screen-2xl mx-auto px-8 min-h-[70vh] py-8">
@@ -83,34 +66,32 @@ const UserManagement: React.FC = () => {
       </div>
 
       {/* User List */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-scroll">
         <table className="min-w-full bg-white border border-gray-300">
           <thead className="bg-[#2499EF] text-white">
             <tr>
               <th className="px-4 py-2 border">User Name</th>
               <th className="px-4 py-2 border">Email</th>
-              <th className="px-4 py-2 border">Registration Date</th>
+              <th className="px-4 py-2 border">Phone</th>
               <th className="px-4 py-2 border">Role</th>
               <th className="px-4 py-2 border">Status</th>
               <th className="px-4 py-2 border">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {users?.map((user: User) => (
               <tr key={user._id}>
-                <td className="px-4 py-2 border">{user.name}</td>
-                <td className="px-4 py-2 border">{user.email}</td>
-                <td className="px-4 py-2 border">
-                  {new Date(user.registrationDate).toLocaleString()}
-                </td>
-                <td className="px-4 py-2 border">{user.role}</td>
+                <td className="px-4 py-2 border">{user?.name}</td>
+                <td className="px-4 py-2 border">{user?.email}</td>
+                <td className="px-4 py-2 border">{user?.phone}</td>
+                <td className="px-4 py-2 border">{user?.role}</td>
                 <td className="px-4 py-2 border">
                   <span
                     className={`px-2 py-1 rounded-full text-white text-xs ${
-                      user.isActive ? "bg-green-500" : "bg-red-500"
+                      user.isDeleted ? "bg-red-500" : "bg-green-500"
                     }`}
                   >
-                    {user.isActive ? "Active" : "Inactive"}
+                    {user.isDeleted ? "Inactive" : "Active"}
                   </span>
                 </td>
                 <td className="px-4 py-2 border">
@@ -122,7 +103,12 @@ const UserManagement: React.FC = () => {
                   </button>
                   <button
                     onClick={() => handleDeleteUser(user._id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded-md"
+                    className={`px-3 py-1 rounded-md ${
+                      user.isDeleted
+                        ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                        : "bg-red-600 text-white"
+                    }`}
+                    disabled={user.isDeleted}
                   >
                     Delete
                   </button>
@@ -249,6 +235,24 @@ const UserManagement: React.FC = () => {
                   <option value="Admin">Admin</option>
                 </select>
               </div>
+
+              <div className="mb-4">
+                <label className="block mb-2">Change Status</label>
+                <select
+                  className="border w-full p-2"
+                  value={newUser.isDeleted ? "true" : "false"}
+                  onChange={(e) =>
+                    setNewUser({
+                      ...newUser,
+                      isDeleted: e.target.value === "true"
+                    })
+                  }
+                >
+                  <option value="false">Active</option>
+                  <option value="true">Inactive</option>
+                </select>
+              </div>
+
               <div className="flex justify-end space-x-4">
                 <button
                   onClick={() => setShowEditUserModal(false)}
